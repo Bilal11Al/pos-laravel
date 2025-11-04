@@ -2,9 +2,11 @@
 
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BelajarController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KalkulatorController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -16,7 +18,9 @@ Route::get('logout', [LoginController::class, 'Logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
     Route::resource('dashboard', DashboardController::class);
-    Route::resource('user',UserController::class);
+    Route::resource('user', UserController::class);
+    Route::resource('category', CategoryController::class);
+    Route::resource('role', RoleController::class);
 });
 
 Route::get('belajar', [BelajarController::class, 'index']);

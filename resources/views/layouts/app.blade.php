@@ -52,6 +52,7 @@
     <!-- End Sidebar-->
     <!-- End #main -->
     <main id="main" class="main">
+        @include('sweetalert::alert')
         @yield('content')
     </main>
     <!-- End #main -->

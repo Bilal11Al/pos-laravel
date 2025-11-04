@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Alert;
 
 class UserController extends Controller
 {
@@ -44,6 +45,7 @@ class UserController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
+            Alert::success('Success', 'data created successfully ');
             return redirect()->route('user.index');
         } catch (ValidationException $th) {
             return redirect()->back()->withErrors($th->validator)->withInput();
@@ -85,6 +87,7 @@ class UserController extends Controller
                 $data['password'] = Hash::make($request->password);
             }
             $users->update($datas);
+            Alert::success('Success', 'data created successfully ');
             return redirect()->route('user.index');
         } catch (ValidationException $th) {
             return redirect()->back()->withErrors($th->validator)->withInput();
@@ -98,6 +101,7 @@ class UserController extends Controller
     {
         $users = User::findOrfail($id);
         $users->delete();
+        Alert::success('Success', 'data created successfully ');
         return redirect()->route('user.index');
     }
 }
