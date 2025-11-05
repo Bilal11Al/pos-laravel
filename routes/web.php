@@ -1,11 +1,14 @@
 <?php
 
+use App\Models\Product;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BelajarController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KalkulatorController;
@@ -21,6 +24,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('user', UserController::class);
     Route::resource('category', CategoryController::class);
     Route::resource('role', RoleController::class);
+    Route::resource('product', ProductController::class);
+    Route::resource('profile', ProfileController::class);
+    Route::post('change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password');
 });
 
 Route::get('belajar', [BelajarController::class, 'index']);
