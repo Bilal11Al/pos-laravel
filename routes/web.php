@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KalkulatorController;
+use App\Http\Controllers\OrderController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', [LoginController::class, 'index']);
@@ -26,7 +27,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('role', RoleController::class);
     Route::resource('product', ProductController::class);
     Route::resource('profile', ProfileController::class);
+    Route::resource('order', OrderController::class);
     Route::post('change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password');
+    Route::post('change-profile', [ProfileController::class, 'changeProfiles'])->name('profile.change-profile');
+    Route::get('get-products', [OrderController::class, 'getProduct'])->name('get-products');
+    Route::post('cashless', [OrderController::class, 'paymentCashless'])->name('cashless');
 });
 
 Route::get('belajar', [BelajarController::class, 'index']);

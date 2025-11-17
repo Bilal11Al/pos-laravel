@@ -23,12 +23,14 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $s->product_name }}</td>
-                            <td>{{ $s->category->name }}</td>
+                            <td>{{ $s->category->name ?? '' }}</td>
                             <td>
                                 <img src="{{ asset('storage/' . $s->product_photo) }}" alt="" width="100px">
                             </td>
                             <td>{{ $s->product_price }}</td>
-                            <td>{{ $s->is_active }}</td>
+                            <td>
+                                <span class="{{ $s->is_active_class }}">{{ $s->is_active_text }}</span>
+                            </td>
                             <td class="w-25">
                                 <a class="btn btn-primary btn-sm" href="{{ route('product.edit', $s->id) }}">Edit</a>
                                 <form action="{{ route('product.destroy', $s->id) }}" method="post" class="d-inline">

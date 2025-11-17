@@ -7,9 +7,15 @@
                 <div class="card">
                     <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                        <h2>{{ $user->name }}</h2>
-                        <h3>Web Designer</h3>
+                        @if ($user->userDetail ?? '')
+                            <img src="{{ asset('storage/' . $user->userDetail->photo) }}" alt="Profile"
+                                class="rounded-circle">
+                        @else
+                            <img src="{{ asset('assets/img/images.png') }}" alt="Profile" class="preview rounded-circle">
+                        @endif
+
+                        <h2>{{ $user->name ?? '' }}</h2>
+                        <h3>{{ $userDetail->job ?? '' }}</h3>
                         <div class="social-links mt-2">
                             <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                             <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -53,40 +59,38 @@
 
                             <div class="tab-pane fade show active profile-overview" id="profile-overview">
                                 <h5 class="card-title">About</h5>
-                                <p class="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores cumque
-                                    temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae
-                                    quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p>
+                                <p class="small fst-italic">{{ $userDetail->about ?? '' }}</p>
 
                                 <h5 class="card-title">Profile Details</h5>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                                    <div class="col-lg-9 col-md-8">{{ $user->name }}</div>
+                                    <div class="col-lg-9 col-md-8">{{ $user->name ?? '' }}</div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Company</div>
-                                    <div class="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
+                                    <div class="col-lg-9 col-md-8">{{ $userDetail->company ?? '' }}</div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Job</div>
-                                    <div class="col-lg-9 col-md-8">Web Designer</div>
+                                    <div class="col-lg-9 col-md-8">{{ $userDetail->job ?? '' }}</div>
                                 </div>
 
-                                <div class="row">
+                                {{-- <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Country</div>
                                     <div class="col-lg-9 col-md-8">USA</div>
-                                </div>
+                                </div> --}}
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Address</div>
-                                    <div class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
+                                    <div class="col-lg-9 col-md-8">{{ $userDetail->address ?? '' }}</div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Phone</div>
-                                    <div class="col-lg-9 col-md-8">(436) 486-3538 x29071</div>
+                                    <div class="col-lg-9 col-md-8">{{ $userDetail->phone ?? '' }}</div>
                                 </div>
 
                                 <div class="row">
@@ -99,15 +103,24 @@
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                                 <!-- Profile Edit Form -->
-                                <form>
+                                <form action="{{ route('profile.change-profile') }}" enctype="multipart/form-data"
+                                    method= "post">
+                                    @csrf
                                     <div class="row mb-3">
                                         <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile
                                             Image</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <img src="assets/img/profile-img.jpg" alt="Profile">
+                                            @if ($user->userDetail ?? '')
+                                                <img src="{{ asset('storage/' . $user->userDetail->photo) }}"
+                                                    alt="Profile" class="preview rounded-circle">
+                                            @else
+                                                <img src="{{ asset('assets/img/images.png') }}" alt="Profile"
+                                                    class="preview rounded-circle">
+                                            @endif
                                             <div class="pt-2">
-                                                <a href="#" class="btn btn-primary btn-sm"
-                                                    title="Upload new profile image"><i class="bi bi-upload"></i></a>
+                                                {{-- <a href="#" class="btn btn-primary btn-sm"
+                                                    title="Upload new profile image"><i class="bi bi-upload"></i></a> --}}
+                                                <input type="file" class="" name="photo">
                                                 <a href="#" class="btn btn-danger btn-sm"
                                                     title="Remove my profile image"><i class="bi bi-trash"></i></a>
                                             </div>
@@ -117,15 +130,15 @@
                                     <div class="row mb-3">
                                         <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="fullName" type="text" class="form-control" id="fullName"
-                                                value="Kevin Anderson">
+                                            <input name="name" type="text" class="form-control" id="fullName"
+                                                value="{{ $user->name ?? '' }}">
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
                                         <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <textarea name="about" class="form-control" id="about" style="height: 100px">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</textarea>
+                                            <textarea name="about" class="form-control" id="about" style="height: 100px">{{ $user->userDetail->about ?? '' }}</textarea>
                                         </div>
                                     </div>
 
@@ -133,7 +146,7 @@
                                         <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
                                         <div class="col-md-8 col-lg-9">
                                             <input name="company" type="text" class="form-control" id="company"
-                                                value="Lueilwitz, Wisoky and Leuschke">
+                                                value="{{ $userDetail->company ?? '' }}">
                                         </div>
                                     </div>
 
@@ -141,15 +154,7 @@
                                         <label for="Job" class="col-md-4 col-lg-3 col-form-label">Job</label>
                                         <div class="col-md-8 col-lg-9">
                                             <input name="job" type="text" class="form-control" id="Job"
-                                                value="Web Designer">
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="country" type="text" class="form-control" id="Country"
-                                                value="USA">
+                                                value="{{ $userDetail->job ?? '' }}">
                                         </div>
                                     </div>
 
@@ -157,7 +162,7 @@
                                         <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
                                         <div class="col-md-8 col-lg-9">
                                             <input name="address" type="text" class="form-control" id="Address"
-                                                value="A108 Adam Street, New York, NY 535022">
+                                                value="{{ $userDetail->address ?? '' }}">
                                         </div>
                                     </div>
 
@@ -165,7 +170,7 @@
                                         <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                                         <div class="col-md-8 col-lg-9">
                                             <input name="phone" type="text" class="form-control" id="Phone"
-                                                value="(436) 486-3538 x29071">
+                                                value="{{ $userDetail->phone ?? '' }}">
                                         </div>
                                     </div>
 
@@ -173,46 +178,9 @@
                                         <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                                         <div class="col-md-8 col-lg-9">
                                             <input name="email" type="email" class="form-control" id="Email"
-                                                value="k.anderson@example.com">
+                                                value="{{ $user->email ?? '' }}">
                                         </div>
                                     </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter
-                                            Profile</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="twitter" type="text" class="form-control" id="Twitter"
-                                                value="https://twitter.com/#">
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook
-                                            Profile</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="facebook" type="text" class="form-control" id="Facebook"
-                                                value="https://facebook.com/#">
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram
-                                            Profile</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="instagram" type="text" class="form-control" id="Instagram"
-                                                value="https://instagram.com/#">
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin
-                                            Profile</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="linkedin" type="text" class="form-control" id="Linkedin"
-                                                value="https://linkedin.com/#">
-                                        </div>
-                                    </div>
-
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary">Save Changes</button>
                                     </div>
@@ -287,7 +255,7 @@
                                             Password</label>
                                         <div class="col-md-8 col-lg-9">
                                             <input name="new_password" type="password" class="form-control"
-                                                id="newPassword" >
+                                                id="newPassword">
                                             @error('new_password')
                                                 <small class="text-danger">
                                                     {{ $message }}
@@ -301,8 +269,8 @@
                                             Password</label>
                                         <div class="col-md-8 col-lg-9">
                                             <input name="new_password_confirmation" type="password" class="form-control"
-                                                id="renewPassword" >
-                                            @error("new_password_confirmation")
+                                                id="renewPassword">
+                                            @error('new_password_confirmation')
                                                 <small class="text-danger">
                                                     {{ $message }}
                                                 </small>
